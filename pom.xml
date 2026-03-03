@@ -11,6 +11,8 @@
     <modules>
         <module>entidad</module>
         <module>persistencia</module>
+        <module>vista</module>
+        <module>negocio</module>
     </modules>
 
     <properties>
