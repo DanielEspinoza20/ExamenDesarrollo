@@ -26,6 +26,7 @@ public class UsuarioDAO extends AbstractDAO<Usuario> {
                     .setParameter("correo", correo)
                     .setParameter("contrasena", contrasena)
                     .getResultList();
+
             if (lista.isEmpty()) {
                 return null;
             }

@@ -8,7 +8,7 @@
 
     <style>
         body{
-            backgroud: linear-gradient(135deg, #4e73df, #1cc88a);
+            background: linear-gradient(135deg, #4e73df, #1cc88a);
             font-family: Arial, sans-serif;
         }
 
@@ -16,7 +16,7 @@
             width: 400px;
             margin: 120px auto;
             padding: 40px;
-            backgroud: white;
+            background: white;
             border-radius: 10px;
             box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
             text-align: center;
@@ -48,13 +48,13 @@
                          placeholder="Usuario"
                          required="true"
                          requiredMessage="El usuario es obligario"
-                         style="width:100%; margin-botton:15px"/>
+                         style="width:100%; margin-bottom:15px"/>
 
-            <p:password value="#{loginUI.usuario.correo}"
+            <p:password value="#{loginUI.usuario.contrasena}"
                         placeholder="Contraseña"
                         required="true"
                         requiredMessage="La contraseña es obligatoria"
-                        style="width:100%; margin-botton:20px;"/>
+                        style="width:100%; margin-bottom:20px;"/>
 
             <p:commandButton value="Iniciar Sesión"
                              action="#{loginUI.login}"

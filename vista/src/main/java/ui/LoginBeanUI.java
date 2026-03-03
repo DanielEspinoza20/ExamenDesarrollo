@@ -51,18 +51,33 @@ public class LoginBeanUI implements Serializable {
 
         } else {
 
+            usuario = us;
+
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Correcto",
                             "Acceso permitido"));
 
-            usuario = us;
 
             FacesContext.getCurrentInstance()
                     .getExternalContext()
-                    .redirect(FacesContext.getCurrentInstance()
-                            .getExternalContext()
-                            .getRequestContextPath() + "/index.xhtml");
+                    .redirect("index.xhtml");
+        }
+    }
+
+    public void verificarSesion() throws IOException {
+        if(usuario == null || usuario.getId() == null){
+            FacesContext.getCurrentInstance()
+                    .getExternalContext()
+                    .redirect("login.xhtml");
+        }
+    }
+
+    public void logout() throws IOException {
+        if (usuario == null || usuario.getId() == null) {
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("login.xhtml");
         }
     }
 
