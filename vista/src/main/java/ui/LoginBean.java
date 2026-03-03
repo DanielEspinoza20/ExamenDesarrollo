@@ -12,8 +12,6 @@ import mx.SauapELS.facade.FacadeUsuario;
 @SessionScoped
 public class LoginBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     private String username;
     private String password;
     private Usuario usuario;
@@ -26,19 +24,30 @@ public class LoginBean implements Serializable {
         if (usuario != null) {
             System.out.println("LOG: Usuario encontrado. Rol en BD: " + usuario.getRol());
 
+            // Redirección para Administrador
             if ("ADMINISTRADOR".equals(usuario.getRol())) {
                 return "admin?faces-redirect=true";
-            } else if ("PROFESOR".equals(usuario.getRol())) {
+            }
+            // Redirección para Profesor
+            else if ("PROFESOR".equals(usuario.getRol())) {
                 return "profesor?faces-redirect=true";
-            } else {
-                System.out.println("LOG: El rol '" + usuario.getRol() + "' no tiene ruta asignada.");
             }
         } else {
-            System.out.println("LOG: Credenciales incorrectas para el usuario: " + username);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario o contraseña incorrectos"));
         }
         return null;
+    }
+
+    // Asegúrate de tener este método para proteger la página de profesor
+    public void verificarProfesor() {
+        if (usuario == null || !"PROFESOR".equals(usuario.getRol())) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public String logout() {
