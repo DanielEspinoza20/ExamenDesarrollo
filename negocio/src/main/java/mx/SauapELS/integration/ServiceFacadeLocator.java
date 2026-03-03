@@ -1,20 +1,39 @@
 package mx.SauapELS.integration;
 
-import mx.SauapELS.facade.FacadeAlumno;
+import mx.SauapELS.facade.FacadeAsignacion;
+import mx.SauapELS.facade.FacadeProfesor;
+import mx.SauapELS.facade.FacadeUnidad;
 import mx.SauapELS.facade.FacadeUsuario;
 
 public class ServiceFacadeLocator {
 
-    private static FacadeAlumno facadeAlumno;
     private static FacadeUsuario facadeUsuario;
+    private static FacadeAsignacion facadeAsignacion;
+    private static FacadeProfesor facadeProfesor;
+    private static FacadeUnidad facadeUnidad;
 
-    public static FacadeAlumno getInstanceFacadeAlumno() {
-        if (facadeAlumno == null) {
-            facadeAlumno = new FacadeAlumno();
-            return facadeAlumno;
-        } else {
-            return facadeAlumno;
+    public static FacadeUnidad getInstanceFacadeUnidad() {
+        if (facadeUnidad == null) {
+            facadeUnidad = new FacadeUnidad();
+            return facadeUnidad;
         }
+        return facadeUnidad;
+    }
+
+    public static FacadeProfesor getInstanceFacadeProfesor() {
+        if (facadeProfesor == null) {
+            facadeProfesor = new FacadeProfesor();
+            return facadeProfesor;
+        }
+        return facadeProfesor;
+    }
+
+    public static FacadeAsignacion getInstanceFacadeAsignacion() {
+        if (facadeAsignacion == null) {
+            facadeAsignacion = new FacadeAsignacion();
+            return facadeAsignacion;
+        }
+        return facadeAsignacion;
     }
 
     public static FacadeUsuario getInstanceFacadeUsuario() {

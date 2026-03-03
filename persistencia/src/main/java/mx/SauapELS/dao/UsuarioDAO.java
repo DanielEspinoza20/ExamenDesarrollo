@@ -1,41 +1,57 @@
 package mx.SauapELS.dao;
 
-import jakarta.persistence.EntityManager;
 import mx.SauapELS.entity.Usuario;
-import mx.SauapELS.persistence.AbstractDAO;
+import mx.SauapELS.persistence.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
-import java.util.List;
+public class UsuarioDAO {
 
-public class UsuarioDAO extends AbstractDAO<Usuario> {
-    private final EntityManager entityManager;
+    public Usuario login(String username, String password) {
 
-    public UsuarioDAO(EntityManager em) {
-        super(Usuario.class);
-        this.entityManager = em;
-    }
+        Session session = null;
+        Usuario usuario = null;
 
-    public List<Usuario> obtenerTodos(){
-        return entityManager
-                .createQuery("SELECT u FROM Usuario u", Usuario.class)
-                .getResultList();
-    }
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
 
-    public Usuario login(String correo, String contrasena) {
-            List<Usuario> lista = entityManager.createQuery(
-                            "SELECT u FROM Usuario u WHERE u.correo = :correo AND u.contrasena = :contrasena", Usuario.class)
-                    .setParameter("correo", correo)
-                    .setParameter("contrasena", contrasena)
-                    .getResultList();
+            Query<Usuario> query = session.createQuery(
+                    "FROM Usuario u WHERE u.username = :user AND u.password = :pass",
+                    Usuario.class
+            );
 
-            if (lista.isEmpty()) {
-                return null;
+            query.setParameter("user", username);
+            query.setParameter("pass", password);
+
+            usuario = query.uniqueResult();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
             }
-            return lista.get(0);
         }
 
+        return usuario;
+    }
 
-    @Override
-    public EntityManager getEntityManager() {
-        return entityManager;
+    public void saveUsuario(Usuario usuario) {
+
+        Session session = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(usuario);
+            session.getTransaction().commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }

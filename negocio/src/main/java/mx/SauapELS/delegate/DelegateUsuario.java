@@ -1,25 +1,32 @@
 package mx.SauapELS.delegate;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import mx.SauapELS.entity.Usuario;
-import mx.SauapELS.integration.ServiceLocator;
+import mx.SauapELS.persistence.HibernateUtil;
 
 import java.util.List;
 
-public class DelegateUsuario {
-    public Usuario login(String password, String correo){
-        Usuario usuario = new Usuario();
-        List<Usuario> usuarios = ServiceLocator.getInstanceUsuarioDAO().findAll();
+public List<Usuario> findAll() {
 
-        for(Usuario us:usuarios){
-            if(us.getContrasena().equalsIgnoreCase(password) && us.getCorreo().equalsIgnoreCase(correo)){
-                usuario = us;
-            }
+    EntityManager em = null;
+    List<Usuario> lista = null;
+
+    try {
+        em = HibernateUtil.getEntityManager();
+
+        TypedQuery<Usuario> query =
+                em.createQuery("SELECT u FROM Usuario u", Usuario.class);
+
+        lista = query.getResultList();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        if (em != null) {
+            em.close();
         }
-        return usuario;
     }
 
-    public void saveUsario(Usuario usuario){
-        ServiceLocator.getInstanceUsuarioDAO().save(usuario);
-    }
-
+    return lista;
 }

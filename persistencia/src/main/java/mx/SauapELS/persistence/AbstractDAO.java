@@ -1,9 +1,10 @@
 package mx.SauapELS.persistence;
-
+//login
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.StoredProcedureQuery;
+import mx.SauapELS.entity.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -175,4 +176,7 @@ public abstract class AbstractDAO<T> {
     }
 
 
+    public Usuario login(String username, String password) {
+        return null;
+    }
 }

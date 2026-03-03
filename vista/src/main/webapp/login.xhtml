@@ -38,28 +38,25 @@
 <h:body>
     <div class="login-container">
         <h:form>
-            <div class="login-title">
-                Examen Desarrollo
-            </div>
+            <p:growl id="mensajes" showDetail="true" />
 
-            <p:messages autoUpdate="true" closable="true" />
+            <p:panel header="Iniciar Sesión" style="width:400px;margin:auto;margin-top:100px;">
 
-            <p:inputText value="#{loginUI.usuario.correo}"
-                         placeholder="Usuario"
-                         required="true"
-                         requiredMessage="El usuario es obligario"
-                         style="width:100%; margin-bottom:15px"/>
+                <p:outputLabel value="Usuario"/>
+                <p:inputText value="#{loginBean.username}" required="true" />
 
-            <p:password value="#{loginUI.usuario.contrasena}"
-                        placeholder="Contraseña"
-                        required="true"
-                        requiredMessage="La contraseña es obligatoria"
-                        style="width:100%; margin-bottom:20px;"/>
+                <br/><br/>
 
-            <p:commandButton value="Iniciar Sesión"
-                             action="#{loginUI.login}"
-                             update="@form"
-                             styleClass="login-button ui-button-sucess"/>
+                <p:outputLabel value="Contraseña"/>
+                <p:password value="#{loginBean.password}" required="true" />
+
+                <br/><br/>
+
+                <p:commandButton value="Ingresar"
+                                 action="#{loginBean.login}"
+                                 update="mensajes" />
+
+            </p:panel>
         </h:form>
     </div>
 </h:body>

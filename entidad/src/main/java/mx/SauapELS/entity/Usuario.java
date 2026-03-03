@@ -4,58 +4,100 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.io.Serializable;
+import jakarta.persistence.*;
+import java.util.Objects;
+
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @Column(name = "idusuario", nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idUsuario")
+    private Integer idUsuario;
 
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "correo", nullable = false, length = 45)
-    private String correo;
+    @Column(name = "username", length = 50, nullable = false, unique = true)
+    private String username;
 
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "contrasena", nullable = false, length = 45)
-    private String contrasena;
+    @Column(name = "password", length = 100, nullable = false)
+    private String password;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idAlumno", nullable = false)
-    private Alumno idAlumno;
+    @Column(name = "rol", length = 20, nullable = false)
+    private String rol;
 
-    public Integer getId() {
-        return id;
+    // 🔹 Constructor vacío (OBLIGATORIO para JPA)
+    public Usuario() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    // 🔹 Constructor con parámetros
+    public Usuario(String username, String password, String rol) {
+        this.username = username;
+        this.password = password;
+        this.rol = rol;
     }
 
-    public String getCorreo() {
-        return correo;
+    // 🔹 Getters y Setters
+
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public String getUsername() {
+        return username;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Alumno getIdAlumno() {
-        return idAlumno;
+    public String getPassword() {
+        return password;
     }
 
-    public void setIdAlumno(Alumno idAlumno) {
-        this.idAlumno = idAlumno;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    // 🔹 equals y hashCode (buena práctica en entidades)
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUsuario);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Usuario other = (Usuario) obj;
+        return Objects.equals(idUsuario, other.idUsuario);
+    }
+
+    // 🔹 toString
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario=" + idUsuario +
+                ", username='" + username + '\'' +
+                ", rol='" + rol + '\'' +
+                '}';
+    }
 }

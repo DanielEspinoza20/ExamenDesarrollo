@@ -3,6 +3,7 @@ package mx.SauapELS.persistence;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import org.hibernate.SessionBuilder;
 
 /**
  * Clase utilitaria para inicializar y obtener el {@link EntityManagerFactory}.
@@ -35,5 +36,9 @@ public class HibernateUtil {
         if (ENTITY_MANAGER_FACTORY != null && ENTITY_MANAGER_FACTORY.isOpen()) {
             ENTITY_MANAGER_FACTORY.close();
         }
+    }
+
+    public static SessionBuilder getSessionFactory() {
+        return null;
     }
 }
