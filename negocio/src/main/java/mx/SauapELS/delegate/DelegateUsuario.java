@@ -7,26 +7,52 @@ import mx.SauapELS.persistence.HibernateUtil;
 
 import java.util.List;
 
-public List<Usuario> findAll() {
+public class DelegateUsuario {
 
-    EntityManager em = null;
-    List<Usuario> lista = null;
+    public Usuario login(String username, String password) {
 
-    try {
-        em = HibernateUtil.getEntityManager();
+        EntityManager em = null;
+        Usuario usuario = null;
 
-        TypedQuery<Usuario> query =
-                em.createQuery("SELECT u FROM Usuario u", Usuario.class);
+        try {
+            em = HibernateUtil.getEntityManager();
 
-        lista = query.getResultList();
+            TypedQuery<Usuario> query =
+                    em.createQuery(
+                            "SELECT u FROM Usuario u WHERE u.username = :username AND u.password = :password",
+                            Usuario.class
+                    );
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        if (em != null) {
-            em.close();
+            query.setParameter("username", username);
+            query.setParameter("password", password);
+
+            usuario = query.getSingleResult();
+
+        } catch (Exception e) {
+            usuario = null;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
+
+        return usuario;
     }
 
-    return lista;
+    public List<Usuario> findAll() {
+        EntityManager em = HibernateUtil.getEntityManager();
+        List<Usuario> lista =
+                em.createQuery("SELECT u FROM Usuario u", Usuario.class)
+                        .getResultList();
+        em.close();
+        return lista;
+    }
+
+    public void saveUsuario(Usuario usuario) {
+        EntityManager em = HibernateUtil.getEntityManager();
+        em.getTransaction().begin();
+        em.persist(usuario);
+        em.getTransaction().commit();
+        em.close();
+    }
 }

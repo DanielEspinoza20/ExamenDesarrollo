@@ -1,34 +1,22 @@
-package mx.SauapELS.delegate;
+package mx.SauapELS.facade;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import java.util.List;
+import mx.SauapELS.delegate.DelegateUsuario;
 import mx.SauapELS.entity.Usuario;
-import mx.SauapELS.persistence.HibernateUtil;
 
-public class DelegateUsuario {
+public class FacadeUsuario {
 
-    public List<Usuario> findAll() {
+    private final DelegateUsuario delegateUsuario;
 
-        EntityManager em = null;
-        List<Usuario> lista = null;
+    public FacadeUsuario() {
+        this.delegateUsuario = new DelegateUsuario();
+    }
 
-        try {
-            em = HibernateUtil.getEntityManager();
+    // ORDEN CORRECTO
+    public Usuario login(String username, String password) {
+        return delegateUsuario.login(username, password);
+    }
 
-            TypedQuery<Usuario> query =
-                    em.createQuery("SELECT u FROM Usuario u", Usuario.class);
-
-            lista = query.getResultList();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-
-        return lista;
+    public void saveUsuario(Usuario usuario) {
+        delegateUsuario.saveUsuario(usuario);
     }
 }

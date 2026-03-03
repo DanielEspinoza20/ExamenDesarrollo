@@ -8,9 +8,9 @@ import java.io.IOException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import mx.SauapELS.delegate.DelegateUsuario;
-import mx.SauapELS.persistence.AbstractDAO;
 
 import mx.SauapELS.entity.Usuario;
+import mx.SauapELS.facade.FacadeUsuario;
 
 @Named("loginBean")
 @SessionScoped
@@ -23,11 +23,11 @@ public class LoginBean implements Serializable {
 
     private Usuario usuario;
 
-    private DelegateUsuario delegate = new DelegateUsuario();
+    private FacadeUsuario facade = new FacadeUsuario();
+
 
     public String login() {
-
-        usuario = delegate.login(username, password);
+        usuario = facade.login(username, password);
 
         if (usuario != null) {
 
