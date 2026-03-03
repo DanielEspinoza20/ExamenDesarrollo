@@ -42,13 +42,23 @@
                 Examen Desarrollo
             </div>
 
-            <p:messages />
+            <p:messages autoUpdate="true" closable="true" />
 
-            <p:inputText placeholder="Usuario"
+            <p:inputText value="#{loginUI.usuario.correo}"
+                         placeholder="Usuario"
+                         required="true"
+                         requiredMessage="El usuario es obligario"
                          style="width:100%; margin-botton:15px"/>
-            <p:password placeholder="Contraseña"
+
+            <p:password value="#{loginUI.usuario.correo}"
+                        placeholder="Contraseña"
+                        required="true"
+                        requiredMessage="La contraseña es obligatoria"
                         style="width:100%; margin-botton:20px;"/>
+
             <p:commandButton value="Iniciar Sesión"
+                             action="#{loginUI.login}"
+                             update="@form"
                              styleClass="login-button ui-button-sucess"/>
         </h:form>
     </div>
