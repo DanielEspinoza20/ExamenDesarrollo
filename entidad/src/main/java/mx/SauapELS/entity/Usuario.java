@@ -28,18 +28,18 @@ public class Usuario implements Serializable {
     @Column(name = "rol", length = 20, nullable = false)
     private String rol;
 
-    // 🔹 Constructor vacío (OBLIGATORIO para JPA)
+
     public Usuario() {
     }
 
-    // 🔹 Constructor con parámetros
+
     public Usuario(String username, String password, String rol) {
         this.username = username;
         this.password = password;
         this.rol = rol;
     }
 
-    // 🔹 Getters y Setters
+
 
     public Integer getIdUsuario() {
         return idUsuario;
@@ -73,7 +73,7 @@ public class Usuario implements Serializable {
         this.rol = rol;
     }
 
-    // 🔹 equals y hashCode (buena práctica en entidades)
+
 
     @Override
     public int hashCode() {
@@ -90,7 +90,7 @@ public class Usuario implements Serializable {
         return Objects.equals(idUsuario, other.idUsuario);
     }
 
-    // 🔹 toString
+
 
     @Override
     public String toString() {

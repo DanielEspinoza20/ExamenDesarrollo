@@ -1,57 +1,32 @@
 package mx.SauapELS.dao;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import mx.SauapELS.entity.Usuario;
+import mx.SauapELS.persistence.AbstractDAO;
 import mx.SauapELS.persistence.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
-public class UsuarioDAO {
+public class UsuarioDAO extends AbstractDAO<Usuario> {
 
-    public Usuario login(String username, String password) {
-
-        Session session = null;
-        Usuario usuario = null;
-
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-
-            Query<Usuario> query = session.createQuery(
-                    "FROM Usuario u WHERE u.username = :user AND u.password = :pass",
-                    Usuario.class
-            );
-
-            query.setParameter("user", username);
-            query.setParameter("pass", password);
-
-            usuario = query.uniqueResult();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-
-        return usuario;
+    public UsuarioDAO() {
+        super(Usuario.class);
     }
 
-    public void saveUsuario(Usuario usuario) {
+    @Override
+    protected EntityManager getEntityManager() {
+        return HibernateUtil.getEntityManager();
+    }
 
-        Session session = null;
-
+    public Usuario login(String username, String password) {
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(usuario);
-            session.getTransaction().commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            return getEntityManager().createQuery(
+                            "SELECT u FROM Usuario u WHERE u.username = :user AND u.password = :pass",
+                            Usuario.class)
+                    .setParameter("user", username)
+                    .setParameter("pass", password)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
     }
 }

@@ -11,12 +11,8 @@ public class FacadeUsuario {
         this.delegateUsuario = new DelegateUsuario();
     }
 
-    // ORDEN CORRECTO
     public Usuario login(String username, String password) {
-        return delegateUsuario.login(username, password);
-    }
 
-    public void saveUsuario(Usuario usuario) {
-        delegateUsuario.saveUsuario(usuario);
+        return delegateUsuario.login(username, password);
     }
 }

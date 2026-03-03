@@ -21,26 +21,20 @@ public abstract class AbstractDAO<T> {
 
     protected abstract EntityManager getEntityManager();
 
-      /* ========================
-       Operaciones CRUD básicas
-       ======================== */
 
-    // Save or persist a new entity
+
     public void save(T entity) {
         executeInsideTransaction(em -> em.persist(entity));
     }
 
-    // Update an existing entity
     public void update(T entity) {
         executeInsideTransaction(em -> em.merge(entity));
     }
 
-    // Delete an entity
     public void delete(T entity) {
         executeInsideTransaction(em -> em.remove(em.contains(entity) ? entity : em.merge(entity)));
     }
 
-    // Find by ID
     public Optional<T> find(Object id) {
         return Optional.ofNullable(getEntityManager().find(entityClass, id));
     }
@@ -55,7 +49,6 @@ public abstract class AbstractDAO<T> {
         }));
     }
 
-    // Find all
     public List<T> findAll() {
         return execute(em ->
                 em.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e", entityClass)
@@ -71,9 +64,6 @@ public abstract class AbstractDAO<T> {
         });
     }
 
-    /* ========================
-       Consultas personalizadas
-       ======================== */
 
 
     public int executeCountQuery(String query) {
@@ -106,7 +96,6 @@ public abstract class AbstractDAO<T> {
         });
     }
 
-    // Find by field value (generic single-field query)
     public List<T> findByField(String fieldName, Object value) {
         return findByOneParameter(value, fieldName);
     }
@@ -121,16 +110,9 @@ public abstract class AbstractDAO<T> {
         );
     }
 
-    /* ========================
-       SQL / procedimientos
-       ======================== */
 
-    /**
-     * Ejecuta un procedimiento almacenado que no requiere parámetros.
-     *
-     * @param procedureName nombre del procedimiento
-     * @return lista de resultados mapeados
-     */
+
+
     public List<T> executeProcedure(String procedureName) {
         return execute(em -> {
             StoredProcedureQuery query = em.createStoredProcedureQuery(procedureName, entityClass);
@@ -147,9 +129,6 @@ public abstract class AbstractDAO<T> {
         );
     }
 
-      /* ========================
-       Helpers internos
-       ======================== */
 
 
     // Utility to run in transaction
@@ -160,7 +139,6 @@ public abstract class AbstractDAO<T> {
         });
     }
 
-    // Optional: for custom return values
     protected <R> R execute(Function<EntityManager, R> function) {
         EntityManager em = getEntityManager();
         EntityTransaction tx = em.getTransaction();
